@@ -1,7 +1,7 @@
 {
   "name": "trellobot",
   "version": "0.0.1",
-  "main": "index.js",
+  "main": "src/main.ts",
   "license": "GPL-3.0",
   "dependencies": {
     "discord.js": "^13.6.0",

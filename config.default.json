@@ -1,0 +1,12 @@
+{
+  "trello": {
+    "boards": [""],
+    "key": "",
+    "token": ""
+  },
+  "discord": {
+    "token": "",
+    "serverId": "",
+    "channelId": ""
+  }
+}

@@ -1,5 +1,5 @@
 import { TrelloConfigType } from "../config/config";
-import { Producer } from "../types";
+import { Producer } from "../pipeline/types";
 // @ts-ignore
 import Trello from "trello-events";
 import StorageHandler from "./storage-handler";
@@ -29,10 +29,9 @@ class TrelloHandler implements Producer<unknown> {
       },
     });
 
-    this.trello.on(
-      "updateCard",
-      function (event: unknown, boardId: unknown) {}
-    );
+    this.trello.on("updateCard", (event: unknown, boardId: unknown) => {
+      console.log(event, boardId);
+    });
   }
 
   public register(callback: (arg: unknown) => void) {

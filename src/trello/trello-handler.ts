@@ -8,7 +8,7 @@ const pollFrequency = 1000 * 60;
 class TrelloHandler {
   private storageHandler: StorageHandler;
 
-  private consumers: Array<(args: unknown) => void>;
+  private consumers: Array<(args: string) => void>;
 
   private trello: Trello;
 
@@ -29,11 +29,11 @@ class TrelloHandler {
     });
 
     this.trello.on("updateCard", (event: unknown, boardId: unknown) => {
-      this.consumers.forEach((consumer) => consumer(boardId));
+      this.consumers.forEach((consumer) => consumer(boardId as string));
     });
   }
 
-  public register(callback: (arg: unknown) => void) {
+  public register(callback: (arg: string) => void) {
     this.consumers.push(callback);
   }
 

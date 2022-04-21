@@ -1,4 +1,4 @@
-import {Consumer, Handler} from "./types";
+import { Consumer, Handler } from "./types";
 
 class Pipeline<I, O> {
   private currentHandler: Handler<I, O>;

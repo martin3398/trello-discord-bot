@@ -1,20 +1,20 @@
-import { TrelloReceiver } from "../types";
 import { TrelloConfigType } from "../config/config";
 // @ts-ignore
 import Trello from "trello-events";
 import StorageHandler from "./storage-handler";
+import { Producer } from "../pipeline/types";
 
 const pollFrequency = 1000 * 60;
 
-class TrelloHandler {
+class TrelloHandler implements Producer<unknown> {
   private storageHandler: StorageHandler;
 
-  private receivers: TrelloReceiver[];
   private trello: Trello;
+
+  private callbacks = [] as ((arg: unknown) => void)[];
 
   constructor(config: TrelloConfigType, storageHandler: StorageHandler) {
     this.storageHandler = storageHandler;
-    this.receivers = [];
 
     this.trello = new Trello({
       pollFrequency,
@@ -28,12 +28,15 @@ class TrelloHandler {
     });
   }
 
-  public register(receiver: TrelloReceiver): void {
-    this.receivers.push(receiver);
-  }
-
   public start(): void {
     this.trello.start(pollFrequency, true);
+    this.trello.on("updateCard", (e: unknown) =>
+      this.callbacks.forEach((fn) => fn(e))
+    );
+  }
+
+  public register(callback: (arg: unknown) => void): void {
+    this.callbacks.push(callback);
   }
 }
 

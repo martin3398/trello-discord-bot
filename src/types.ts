@@ -1,7 +1,3 @@
-export interface TrelloReceiver {
-  onEvent: (event: string, data: string) => void;
-}
-
 export interface Producer<T> {
   register: (callback: (arg: T) => void) => void;
   start: () => void;

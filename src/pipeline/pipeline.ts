@@ -1,40 +1,43 @@
-import { Consumer, Middleware, Producer } from "./types";
+import {Consumer, Handler} from "./types";
 
-class Pipeline {
-  private producer: Producer<any> | undefined;
-  private middlewares = [] as Middleware<any, any>[];
-  private consumers = [] as Consumer<any>[];
+class Pipeline<I, O> {
+  private currentHandler: Handler<I, O>;
 
-  public setProducer(producer: Producer<any>): void {
-    this.producer = producer;
-    this.producer.register((e) => this.handle(e));
+  constructor(currentHandler: Handler<I, O>) {
+    this.currentHandler = currentHandler;
   }
 
-  public addMiddleware(middleware: Middleware<any, any>): void {
-    this.middlewares.push(middleware);
+  public addHandler<K>(nextHandler: Handler<O, K>): Pipeline<I, K> {
+    return new Pipeline<I, K>(
+      new FunctionHandler((e) =>
+        nextHandler.process(this.currentHandler.process(e))
+      )
+    );
   }
 
-  public addConsumer(consumer: Consumer<any>): void {
-    this.consumers.push(consumer);
+  public addConsumer(nextHandler: Consumer<O>) {
+    return this.addHandler(nextHandler);
   }
 
-  public start(): void {
-    if (!this.producer) {
-      throw new Error("producer not initalized");
-    }
-    this.producer.start();
-  }
-
-  private handle(input: any): void {
-    let content = input;
-    this.middlewares.forEach((middleware) => {
-      content = middleware.transform(content);
-    });
-
-    this.consumers.forEach((consumer) => {
-      consumer.consume(content);
-    });
+  public execute(input: I): O {
+    return this.currentHandler.process(input);
   }
 }
 
-export default Pipeline;
+class FunctionHandler<I, O> implements Handler<I, O> {
+  private readonly fn: (input: I) => O;
+
+  constructor(fn: (input: I) => O) {
+    this.fn = fn;
+  }
+
+  public process(input: I): O {
+    return this.fn(input);
+  }
+}
+
+const createPipeline = <I>() => {
+  return new Pipeline<I, I>(new FunctionHandler<I, I>((e) => e));
+};
+
+export { createPipeline };

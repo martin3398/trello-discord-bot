@@ -1,12 +1,11 @@
 import { TrelloConfigType } from "../config/config";
-import { Producer } from "../pipeline/types";
 // @ts-ignore
 import Trello from "trello-events";
 import StorageHandler from "./storage-handler";
 
 const pollFrequency = 1000 * 60;
 
-class TrelloHandler implements Producer<unknown> {
+class TrelloHandler {
   private storageHandler: StorageHandler;
 
   private consumers: Array<(args: unknown) => void>;
@@ -30,7 +29,7 @@ class TrelloHandler implements Producer<unknown> {
     });
 
     this.trello.on("updateCard", (event: unknown, boardId: unknown) => {
-      console.log(event, boardId);
+      this.consumers.forEach((consumer) => consumer(boardId));
     });
   }
 

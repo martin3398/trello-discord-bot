@@ -1,8 +1,8 @@
-import { Middleware } from "../pipeline/types";
+import { Handler } from "../pipeline/types";
 
-class CardMiddleware implements Middleware<unknown, string> {
-  transform(payload: unknown): string {
-    return "abc";
+class CardMiddleware implements Handler<string, string> {
+  process(input: string): string {
+    return input;
   }
 }
 

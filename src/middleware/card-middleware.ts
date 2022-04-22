@@ -1,8 +1,10 @@
 import { Handler } from "../pipeline/types";
+import { Action } from "../trello/actions";
 
-class CardMiddleware implements Handler<string, string> {
-  process(input: string): string {
-    return input;
+class CardMiddleware implements Handler<Action, string> {
+  process(input: Action): string {
+    console.log(input.getActionObject().data);
+    return "test";
   }
 }
 

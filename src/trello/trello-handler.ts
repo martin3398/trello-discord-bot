@@ -1,4 +1,3 @@
-import { TrelloReceiver } from "../types";
 import { TrelloConfigType } from "../config/config";
 // @ts-ignore
 import Trello from "trello-events";
@@ -9,12 +8,14 @@ const pollFrequency = 1000 * 60;
 class TrelloHandler {
   private storageHandler: StorageHandler;
 
-  private receivers: TrelloReceiver[];
+  private consumers: Array<(args: unknown) => void>;
+
   private trello: Trello;
 
   constructor(config: TrelloConfigType, storageHandler: StorageHandler) {
     this.storageHandler = storageHandler;
-    this.receivers = [];
+
+    this.consumers = [];
 
     this.trello = new Trello({
       pollFrequency,
@@ -26,10 +27,14 @@ class TrelloHandler {
         token: config.token,
       },
     });
+
+    this.trello.on("updateCard", (event: unknown, boardId: unknown) => {
+      this.consumers.forEach((consumer) => consumer(boardId));
+    });
   }
 
-  public register(receiver: TrelloReceiver): void {
-    this.receivers.push(receiver);
+  public register(callback: (arg: unknown) => void) {
+    this.consumers.push(callback);
   }
 
   public start(): void {

@@ -6,7 +6,7 @@ class StorageHandler {
   }
 
   public getMaxId(): number {
-    return 0;
+    return this.maxId;
   }
 
   public setMaxId(maxId: number): void {

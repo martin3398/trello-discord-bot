@@ -1,10 +1,16 @@
-import { TrelloReceiver } from "../types";
 import { DiscordConfigType } from "../config/config";
+import {Consumer} from "../pipeline/types";
 
-class DiscordHandler implements TrelloReceiver {
-  constructor(config: DiscordConfigType) {}
+class DiscordHandler implements Consumer<string>{
+  private config: DiscordConfigType;
 
-  public onEvent(event: string, data: string): void {}
+  constructor(config: DiscordConfigType) {
+    this.config = config;
+  }
+
+  process(input: string): void {
+    console.log(input);
+  }
 }
 
 export default DiscordHandler;

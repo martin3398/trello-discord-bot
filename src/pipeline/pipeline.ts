@@ -22,19 +22,19 @@ class Pipeline<I, O> {
     return this.addHandler(nextHandler);
   }
 
-  public execute(input: I): O {
+  public execute(input: I): O | undefined {
     return this.currentHandler.process(input);
   }
 }
 
 class FunctionHandler<I, O> implements Handler<I, O> {
-  private readonly fn: (input: I) => O;
+  private readonly fn: (input: I) => O | undefined;
 
-  constructor(fn: (input: I) => O) {
+  constructor(fn: (input: I) => O | undefined) {
     this.fn = fn;
   }
 
-  public process(input: I): O {
+  public process(input: I): O | undefined {
     return this.fn(input);
   }
 }

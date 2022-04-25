@@ -1,10 +1,9 @@
 import { Handler } from "../pipeline/types";
-import { Action } from "../trello/actions";
+import { UpdateCardEvent } from "../trello/types";
 
-class CardMiddleware implements Handler<Action, string> {
-  process(input: Action): string {
-    console.log(input.getActionObject().data);
-    return "test";
+class CardMiddleware implements Handler<UpdateCardEvent, string> {
+  process(input: UpdateCardEvent): string {
+    return `Moved '${input.data.card.name} from '${input.data.listBefore.name}' to '${input.data.listAfter.name}'`;
   }
 }
 

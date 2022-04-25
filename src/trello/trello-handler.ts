@@ -2,13 +2,14 @@ import { TrelloConfigType } from "../config/config";
 // @ts-ignore
 import Trello from "trello-events";
 import StorageHandler from "./storage-handler";
+import { UnverifiedEvent } from "./types";
 
 const pollFrequency = 1000 * 60;
 
 class TrelloHandler {
   private storageHandler: StorageHandler;
 
-  private consumers: Array<(args: string) => void>;
+  private consumers: Array<(args: UnverifiedEvent) => void>;
 
   private trello: Trello;
 
@@ -28,12 +29,12 @@ class TrelloHandler {
       },
     });
 
-    this.trello.on("updateCard", (event: unknown, boardId: unknown) => {
-      this.consumers.forEach((consumer) => consumer(event as string));
+    this.trello.on("updateCard", (event: UnverifiedEvent, boardId: string) => {
+      this.consumers.forEach((consumer) => consumer(event));
     });
   }
 
-  public register(callback: (arg: string) => void) {
+  public register(callback: (arg: UnverifiedEvent) => void) {
     this.consumers.push(callback);
   }
 

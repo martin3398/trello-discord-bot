@@ -1,7 +1,7 @@
 import { DiscordConfigType } from "../config/config";
-import {Consumer} from "../pipeline/types";
+import { Consumer } from "../pipeline/types";
 
-class DiscordHandler implements Consumer<string>{
+class DiscordHandler implements Consumer<string> {
   private config: DiscordConfigType;
 
   constructor(config: DiscordConfigType) {

@@ -1,9 +1,9 @@
-import { parseConfig } from "./config/config";
-import TrelloHandler from "./trello/trello-handler";
-import CardMiddleware from "./middleware/card-middleware";
-import { createPipeline } from "./pipeline/pipeline";
-import StorageHandler from "./trello/storage-handler";
-import DiscordHandler from "./discord/discord-handler";
+import { parseConfig } from './config/config';
+import TrelloHandler from './trello/trello-handler';
+import CardMiddleware from './middleware/card-middleware';
+import { createPipeline } from './pipeline/pipeline';
+import StorageHandler from './trello/storage-handler';
+import DiscordHandler from './discord/discord-handler';
 
 (async function () {
   const config = parseConfig();

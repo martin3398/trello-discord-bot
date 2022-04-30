@@ -1,15 +1,15 @@
-import { readFileSync } from "fs";
+import { readFileSync } from 'fs';
 
 const TRELLO_DEFAULT = {
   boards: [],
-  key: "",
-  token: "",
+  key: '',
+  token: '',
 };
 
 const DISCORD_DEFAULT = {
-  token: "",
-  serverId: "",
-  channelId: "",
+  token: '',
+  serverId: '',
+  channelId: '',
 };
 
 const DEFAULT = {
@@ -21,9 +21,9 @@ export type TrelloConfigType = typeof TRELLO_DEFAULT;
 export type DiscordConfigType = typeof DISCORD_DEFAULT;
 export type ConfigType = typeof DEFAULT;
 
-const parseConfig = (filename = "config.json"): ConfigType => {
+const parseConfig = (filename = 'config.json'): ConfigType => {
   try {
-    const result = JSON.parse(readFileSync(filename, "utf-8"));
+    const result = JSON.parse(readFileSync(filename, 'utf-8'));
 
     return {
       trello: {

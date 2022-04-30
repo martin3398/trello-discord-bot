@@ -1,4 +1,4 @@
-import { Consumer, Handler } from "./types";
+import { Consumer, Handler } from './types';
 
 class Pipeline<I, O> {
   private currentHandler: Handler<I, O>;
@@ -11,9 +11,7 @@ class Pipeline<I, O> {
     return new Pipeline<I, K>(
       new FunctionHandler((input: I) => {
         const intermediate = this.currentHandler.process(input);
-        return intermediate === undefined
-          ? undefined
-          : nextHandler.process(intermediate);
+        return intermediate === undefined ? undefined : nextHandler.process(intermediate);
       })
     );
   }
@@ -40,7 +38,7 @@ class FunctionHandler<I, O> implements Handler<I, O> {
 }
 
 const createPipeline = <I>() => {
-  return new Pipeline<I, I>(new FunctionHandler<I, I>((e) => e));
+  return new Pipeline<I, I>(new FunctionHandler<I, I>(e => e));
 };
 
 export { createPipeline };

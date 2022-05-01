@@ -1,7 +1,7 @@
-import { TrelloConfigType } from "../config/config";
+import { TrelloConfigType } from '../config/config';
 // @ts-ignore
-import Trello from "trello-events";
-import StorageHandler from "./storage-handler";
+import Trello from 'trello-events';
+import StorageHandler from './storage-handler';
 
 const pollFrequency = 1000 * 60;
 
@@ -28,8 +28,8 @@ class TrelloHandler {
       },
     });
 
-    this.trello.on("updateCard", (event: unknown, boardId: unknown) => {
-      this.consumers.forEach((consumer) => consumer(boardId as string));
+    this.trello.on('updateCard', (event: unknown, boardId: unknown) => {
+      this.consumers.forEach(consumer => consumer(boardId as string));
     });
   }
 

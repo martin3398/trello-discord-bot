@@ -1,6 +1,6 @@
-import { DiscordConfigType } from "../config/config";
-import { Consumer } from "../pipeline/types";
-import { Client, Intents, TextChannel } from "discord.js";
+import { DiscordConfigType } from '../config/config';
+import { Consumer } from '../pipeline/types';
+import { Client, Intents, TextChannel } from 'discord.js';
 
 class DiscordHandler implements Consumer<string> {
   private client: Client;
@@ -18,7 +18,7 @@ class DiscordHandler implements Consumer<string> {
       await this.client.guilds.fetch(this.config.serverId);
       await this.client.channels.fetch(this.config.channelId);
     } catch (e) {
-      throw new Error("Cannot initalize Discord");
+      throw new Error('Cannot initalize Discord');
     }
     return this;
   }
@@ -27,11 +27,11 @@ class DiscordHandler implements Consumer<string> {
     const channel = this.client.channels.cache.get(this.config.channelId);
 
     if (!(channel instanceof TextChannel)) {
-      throw new Error("Channel has wrong type");
+      throw new Error('Channel has wrong type');
     }
 
     channel.send(input).catch(() => {
-      throw new Error("Cannot send message to Discord");
+      throw new Error('Cannot send message to Discord');
     });
   }
 }
